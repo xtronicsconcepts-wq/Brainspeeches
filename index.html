@@ -1,47 +1,34 @@
-<div id="overlay">
-
-    <h1>⚠ SYSTEM BREACH ⚠</h1>
-
-    <p style="color:white;font-size:24px;">
-        Analyse du système...
-    </p>
-
-    <!-- Barre -->
-    <div id="barContainer">
-
-        <div id="bar"></div>
-
-    </div>
-
-    <!-- Pourcentage -->
-    <p id="percent">0%</p>
-
-    <!-- Status -->
-    <p id="status">
-        Initialisation...
-    </p>
-
-</div>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRINITY SYSTEM</title>
 
 <style>
 
+body{
+    margin:0;
+    overflow:hidden;
+    background:black;
+    font-family:Courier New;
+}
+
+/* écran principal */
+
 #overlay{
     position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
+    inset:0;
     background:black;
     color:red;
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    font-family:Courier New;
     animation:shake 0.08s infinite;
 }
 
-#overlay h1{
+h1{
     font-size:70px;
     text-shadow:0 0 20px red;
 }
@@ -59,7 +46,6 @@
     width:0%;
     height:100%;
     background:lime;
-    transition:0.2s;
     box-shadow:0 0 20px lime;
 }
 
@@ -67,111 +53,276 @@
     color:lime;
     font-size:50px;
     margin-top:15px;
-    text-shadow:0 0 20px lime;
 }
 
 #status{
     color:white;
-    margin-top:30px;
     font-size:25px;
+    margin-top:25px;
 }
 
+/* fausses fenêtres */
+
+.fake{
+    position:fixed;
+    width:330px;
+    padding:20px;
+    background:black;
+    border:3px solid red;
+    box-shadow:0 0 25px red;
+    color:red;
+    font-size:22px;
+    z-index:999999;
+    animation:shake 0.08s infinite;
+}
+
+/* animations */
+
 @keyframes shake{
+
     0%{transform:translate(2px,2px);}
     25%{transform:translate(-2px,1px);}
     50%{transform:translate(2px,-2px);}
     75%{transform:translate(-1px,2px);}
     100%{transform:translate(2px,1px);}
+
 }
 
 </style>
+</head>
+
+<body>
+
+<div id="overlay">
+
+    <h1>⚠ SYSTEM BREACH ⚠</h1>
+
+    <p style="color:white;font-size:24px;">
+        Analyse du système...
+    </p>
+
+    <div id="barContainer">
+        <div id="bar"></div>
+    </div>
+
+    <p id="percent">0%</p>
+
+    <p id="status">
+        Initialisation...
+    </p>
+
+</div>
 
 <script>
+
+/* éléments */
 
 const bar = document.getElementById("bar");
 const percent = document.getElementById("percent");
 const status = document.getElementById("status");
 
+/* messages */
+
 const messages = [
 
     "Connexion au satellite...",
-    "Analyse des fichiers...",
+    "SYSTEME CORROMPU",
+    "VOUS ÊTES ATTAQUÉ",
+    "Analyse mémoire...",
     "Adresse IP détectée...",
-    "Caméra activée...",
+    "TRINITY ACCESS...",
     "Téléchargement des données...",
-    "Injection en cours...",
-    "Propagation du virus..."
+    "Caméra activée...",
+    "Injection système..."
+
 ];
+
+/* popup */
+
+function popup(text){
+
+    const div = document.createElement("div");
+
+    div.className = "fake";
+
+    div.style.top =
+        Math.random()*80 + "%";
+
+    div.style.left =
+        Math.random()*80 + "%";
+
+    div.innerHTML = `
+
+        <h2 style="
+            margin:0;
+            color:red;
+        ">
+            ⚠ ALERTE ⚠
+        </h2>
+
+        <p style="
+            color:white;
+            margin-top:15px;
+        ">
+            ${text}
+        </p>
+
+    `;
+
+    document.body.appendChild(div);
+
+    navigator.vibrate?.([200,100,200]);
+
+    setTimeout(()=>{
+
+        div.remove();
+
+    },5000);
+
+}
+
+/* beaucoup de fenêtres */
+
+function chaos(){
+
+    for(let i=0;i<35;i++){
+
+        setTimeout(()=>{
+
+            popup(
+
+                messages[
+                    Math.floor(
+                        Math.random()*messages.length
+                    )
+                ]
+
+            );
+
+        },i*250);
+
+    }
+
+    /* satellite après 5 sec */
+
+    setTimeout(()=>{
+
+        popup(
+            "Connexion aux satellites TRINITY..."
+        );
+
+    },5000);
+
+    /* spam intense */
+
+    const spam = setInterval(()=>{
+
+        popup(
+
+            messages[
+                Math.floor(
+                    Math.random()*messages.length
+                )
+            ]
+
+        );
+
+    },180);
+
+    /* fermeture après 10 sec */
+
+    setTimeout(()=>{
+
+        clearInterval(spam);
+
+        document
+        .querySelectorAll(".fake")
+        .forEach(el=>el.remove());
+
+        status.innerText =
+            "Système silencieux...";
+
+    },10000);
+
+}
+
+chaos();
+
+/* progression */
 
 let i = 0;
 
-const infect = setInterval(() => {
+const infect = setInterval(()=>{
 
     i++;
 
     bar.style.width = i + "%";
 
-    percent.innerText = i + "%";
+    percent.innerText =
+        i + "%";
 
     status.innerText =
-        messages[Math.floor(Math.random()*messages.length)];
 
-    navigator.vibrate?.([100]);
+        messages[
+            Math.floor(
+                Math.random()*messages.length
+            )
+        ];
 
-    // Notifications
-    if(i % 15 === 0){
+    /* popup régulière */
 
-        if(Notification.permission === "granted"){
+    if(i % 8 === 0){
 
-            new Notification(
-                "⚠ SYSTEME INFECTÉ",
-                {
-                    body:"Progression : " + i + "%"
-                }
-            );
+        popup(
 
-        }
+            messages[
+                Math.floor(
+                    Math.random()*messages.length
+                )
+            ]
+
+        );
 
     }
 
-    // Fin
+    /* fin */
+
     if(i >= 100){
 
         clearInterval(infect);
 
-        setTimeout(() => {
+        setTimeout(()=>{
 
-            document.getElementById("overlay").innerHTML = `
+            document
+            .getElementById("overlay")
+            .innerHTML = `
 
                 <h1 style="
                     color:red;
-                    text-shadow:0 0 25px red;
-                    font-size:70px;
+                    font-size:75px;
+                    text-shadow:
+                    0 0 25px red;
                 ">
-                    ☠ EXPOSITION TOTALE ☠
+                    ☠ SYSTEM LOCKED ☠
                 </h1>
 
                 <p style="
                     color:white;
                     font-size:35px;
-                    margin-top:30px;
                 ">
-                    Système soumis.
+                    Connexion TRINITY établie
                 </p>
 
                 <p style="
                     color:lime;
                     font-size:45px;
-                    text-shadow:0 0 20px lime;
+                    text-shadow:
+                    0 0 25px lime;
                 ">
-                    Virus TETRIX-01 implémenté.
+                    DONNÉES TRANSFÉRÉES
                 </p>
 
             `;
-
-            navigator.vibrate?.([
-                400,100,400,100,700
-            ]);
 
         },1000);
 
@@ -179,6 +330,68 @@ const infect = setInterval(() => {
 
 },120);
 
-Notification.requestPermission();
+/* si utilisateur clique */
+
+let already = false;
+
+document.body.addEventListener("click",()=>{
+
+    if(!already){
+
+        already = true;
+
+        popup(
+            "SYSTEME DÉJÀ INFECTÉ — DONNÉES TRANSFÉRÉES"
+        );
+
+    }
+
+});
+
+/* si utilisateur revient */
+
+if(
+
+    localStorage.getItem(
+        "infected"
+    ) === "yes"
+
+){
+
+    setTimeout(()=>{
+
+        popup(
+            "SYSTEME DÉJÀ INFECTÉ"
+        );
+
+    },1000);
+
+    setTimeout(()=>{
+
+        popup(
+            "SYSTEME CORROMPU"
+        );
+
+    },2200);
+
+    setTimeout(()=>{
+
+        popup(
+            "Maintenant tu sais que tu dois faire gaffe"
+        );
+
+    },3500);
+
+}
+
+/* sauvegarde */
+
+localStorage.setItem(
+    "infected",
+    "yes"
+);
 
 </script>
+
+</body>
+</html>
