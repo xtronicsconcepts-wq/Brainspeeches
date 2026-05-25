@@ -348,39 +348,31 @@ document.body.addEventListener("click",()=>{
 
 });
 
-/* si utilisateur revient */
+/* =========================
+   SI UTILISATEUR REVIENT
+========================= */
 
-if(
-
-    localStorage.getItem(
-        "infected"
-    ) === "yes"
-
-){
+if(localStorage.getItem("infected") === "yes"){
 
     setTimeout(()=>{
 
         popup(
-            "SYSTEME DÉJÀ INFECTÉ"
+            "SYSTEME INFECTÉ"
         );
 
     },1000);
 
-    setTimeout(()=>{
-
-        popup(
-            "SYSTEME CORROMPU"
-        );
-
-    },2200);
+    /* ferme la fenêtre après 5 sec */
 
     setTimeout(()=>{
 
-        popup(
-            "Maintenant tu sais que tu dois faire gaffe"
-        );
+        document.body.innerHTML = "";
 
-    },3500);
+        window.open("","_self");
+
+        window.close();
+
+    },5000);
 
 }
 
