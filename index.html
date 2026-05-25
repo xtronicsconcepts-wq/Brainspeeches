@@ -1,0 +1,184 @@
+<div id="overlay">
+
+    <h1>⚠ SYSTEM BREACH ⚠</h1>
+
+    <p style="color:white;font-size:24px;">
+        Analyse du système...
+    </p>
+
+    <!-- Barre -->
+    <div id="barContainer">
+
+        <div id="bar"></div>
+
+    </div>
+
+    <!-- Pourcentage -->
+    <p id="percent">0%</p>
+
+    <!-- Status -->
+    <p id="status">
+        Initialisation...
+    </p>
+
+</div>
+
+<style>
+
+#overlay{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:black;
+    color:red;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    font-family:Courier New;
+    animation:shake 0.08s infinite;
+}
+
+#overlay h1{
+    font-size:70px;
+    text-shadow:0 0 20px red;
+}
+
+#barContainer{
+    width:70%;
+    height:40px;
+    border:2px solid red;
+    margin-top:30px;
+    overflow:hidden;
+    box-shadow:0 0 20px red;
+}
+
+#bar{
+    width:0%;
+    height:100%;
+    background:lime;
+    transition:0.2s;
+    box-shadow:0 0 20px lime;
+}
+
+#percent{
+    color:lime;
+    font-size:50px;
+    margin-top:15px;
+    text-shadow:0 0 20px lime;
+}
+
+#status{
+    color:white;
+    margin-top:30px;
+    font-size:25px;
+}
+
+@keyframes shake{
+    0%{transform:translate(2px,2px);}
+    25%{transform:translate(-2px,1px);}
+    50%{transform:translate(2px,-2px);}
+    75%{transform:translate(-1px,2px);}
+    100%{transform:translate(2px,1px);}
+}
+
+</style>
+
+<script>
+
+const bar = document.getElementById("bar");
+const percent = document.getElementById("percent");
+const status = document.getElementById("status");
+
+const messages = [
+
+    "Connexion au satellite...",
+    "Analyse des fichiers...",
+    "Adresse IP détectée...",
+    "Caméra activée...",
+    "Téléchargement des données...",
+    "Injection en cours...",
+    "Propagation du virus..."
+];
+
+let i = 0;
+
+const infect = setInterval(() => {
+
+    i++;
+
+    bar.style.width = i + "%";
+
+    percent.innerText = i + "%";
+
+    status.innerText =
+        messages[Math.floor(Math.random()*messages.length)];
+
+    navigator.vibrate?.([100]);
+
+    // Notifications
+    if(i % 15 === 0){
+
+        if(Notification.permission === "granted"){
+
+            new Notification(
+                "⚠ SYSTEME INFECTÉ",
+                {
+                    body:"Progression : " + i + "%"
+                }
+            );
+
+        }
+
+    }
+
+    // Fin
+    if(i >= 100){
+
+        clearInterval(infect);
+
+        setTimeout(() => {
+
+            document.getElementById("overlay").innerHTML = `
+
+                <h1 style="
+                    color:red;
+                    text-shadow:0 0 25px red;
+                    font-size:70px;
+                ">
+                    ☠ EXPOSITION TOTALE ☠
+                </h1>
+
+                <p style="
+                    color:white;
+                    font-size:35px;
+                    margin-top:30px;
+                ">
+                    Système soumis.
+                </p>
+
+                <p style="
+                    color:lime;
+                    font-size:45px;
+                    text-shadow:0 0 20px lime;
+                ">
+                    Virus TETRIX-01 implémenté.
+                </p>
+
+            `;
+
+            navigator.vibrate?.([
+                400,100,400,100,700
+            ]);
+
+        },1000);
+
+    }
+
+},120);
+
+Notification.requestPermission();
+
+</script>
